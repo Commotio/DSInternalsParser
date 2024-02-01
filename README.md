@@ -1,6 +1,6 @@
 # DSInternalsParser
 Revamp of DSInternalsParser by r4wd3r (https://github.com/r4wd3r/ADPWN/tree/master/dsinternalsparser)
-
+```
 -----------------------
 DSInternals Parser v2.0
 -----------------------
@@ -30,3 +30,4 @@ optional arguments:
                         ClearText password.
   --wdigest             Generate the file with existent users that have
                         Wdigest password.
+```
