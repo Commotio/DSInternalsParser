@@ -22,7 +22,6 @@ optional arguments:
                         Prefix name for output files.
   --ntlm                Generate the file with username and current NTLM hash.
   --nthistory           Generate the file with username and history NTLM
-
   --enabled             Generate the file with LM:NT and enabled status.
                         hashes.
   --lm                  Generate the file with username and current LM hash.
