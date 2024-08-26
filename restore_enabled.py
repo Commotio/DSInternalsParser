@@ -4,7 +4,7 @@ import sys
 # File paths
 userfile = "output_enabled.txt"
 hashfile = "cracked.txt"
-outputfile = "updated_users.txt"
+outputfile = "crackedusers.txt"
 
 # Check if files exist
 for file in [userfile, hashfile]:
