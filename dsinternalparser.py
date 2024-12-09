@@ -213,7 +213,7 @@ def writeNTLMFile(users_list, output):
     print("Writing user (0/%d)" % (len(users_list)), end=' ')
     for i in range(len(users_list)):
         print("\rWriting user (%d/%d)" % (i + 1, len(users_list)), end=' ')
-        f.writelines(users_list[i].samaccountname + ":" + users_list[i].nthash + '\n')
+        f.writelines(users_list[i].samaccountname + ":841343:NO LM-HASH**********************:" + users_list[i].nthash + ':::\n')
     print(".........................................................OK")
     print("[+] NTLM File: %s successfully created." % (filename))
 
