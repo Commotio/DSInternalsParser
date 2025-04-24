@@ -208,7 +208,7 @@ def writeNTLMFile(users_list, output):
     try:
         f = codecs.open(filename, "w", "utf-8")
     except:
-        print("ERROR: Cannot create the cleartext file.")
+        print("ERROR: Cannot create the NTLM file.")
 
     print("Writing user (0/%d)" % (len(users_list)), end=' ')
     for i in range(len(users_list)):
@@ -251,12 +251,12 @@ def writeLMFile(users_list, output):
     try:
         f = codecs.open(filename, "w", "utf-8")
     except:
-        print("ERROR: Cannot create the cleartext file.")
+        print("ERROR: Cannot create the LM file.")
 
     print("Writing user (0/%d)" % (len(users_list)), end=' ')
     for i in range(len(users_list)):
         print("\rWriting user (%d/%d)" % (i + 1, len(users_list)), end=' ')
-        if users_list[i].cleartext != "" and users_list[i].cleartext != " ":
+        if users_list[i].lm != "" and users_list[i].lm != " ":
             f.writelines(users_list[i].samaccountname + ":" + users_list[i].lmhash + '\n')
     print(".........................................................OK")
     print("[+] LM File: %s successfully created." % (filename))
