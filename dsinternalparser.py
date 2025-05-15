@@ -256,7 +256,7 @@ def writeLMFile(users_list, output):
     print("Writing user (0/%d)" % (len(users_list)), end=' ')
     for i in range(len(users_list)):
         print("\rWriting user (%d/%d)" % (i + 1, len(users_list)), end=' ')
-        if users_list[i].lm != "" and users_list[i].lm != " ":
+        if users_list[i].lmhash != "" and users_list[i].lmhash != " ":
             f.writelines(users_list[i].samaccountname + ":" + users_list[i].lmhash + '\n')
     print(".........................................................OK")
     print("[+] LM File: %s successfully created." % (filename))
