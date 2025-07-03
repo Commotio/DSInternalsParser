@@ -20,7 +20,6 @@ class User():
 
     def __init__(self):
         self.distinguishedname = ""
-        self.sid = ""
         self.samaccountname = ""
         self.samaccounttype = ""
         self.deleted = False
@@ -31,6 +30,7 @@ class User():
         self.surname = ""
         self.nthash = ""
         self.lmhash = ""
+        self.rid = ""
         self.nthistory = []  # Defined as property. It is set wihtout append.
         self.lmhistory = []  # Defined as property. It is set wihtout append.
         self.cleartext = ""
@@ -47,7 +47,7 @@ def processFile(filename):
 
     users_list = []
     current_user = User()
-    hash_pattern = re.compile('.*Hash\s[0-9]*.*')
+    hash_pattern = re.compile('.*Hash\\s[0-9]*.*')
 
     try:
         f = open(filename, 'rt', encoding='ascii', errors='replace')
@@ -70,10 +70,6 @@ def processFile(filename):
             current_user = User()
             _temp = lines[i].split(':')
             current_user.distinguishedname = str(_temp[1]).strip()
-
-        elif "Sid:" in lines[i]:
-            _temp = lines[i].split(':')
-            current_user.sid = str(_temp[1]).strip()
 
         elif "SamAccountName:" in lines[i]:
             _temp = lines[i].split(':')
@@ -120,6 +116,10 @@ def processFile(filename):
         elif "ClearText:" in lines[i]:
             _temp = lines[i].split(':')
             current_user.cleartext = str(_temp[1]).strip()
+
+        elif "Sid:" in lines[i]:
+            full_sid = lines[i].split(':', 1)[1].strip()
+            current_user.rid = full_sid.split('-')[-1]
 
         elif "NTHashHistory:" in lines[i]:
             # Creates the list nthistory, and then is assigned to user.nthistory list
@@ -213,7 +213,7 @@ def writeNTLMFile(users_list, output):
     print("Writing user (0/%d)" % (len(users_list)), end=' ')
     for i in range(len(users_list)):
         print("\rWriting user (%d/%d)" % (i + 1, len(users_list)), end=' ')
-        f.writelines(users_list[i].samaccountname + ":841343:NO LM-HASH**********************:" + users_list[i].nthash + ':::\n')
+        f.writelines(users_list[i].samaccountname + ":" + users_list[i].rid + ":NO LM-HASH**********************:" + users_list[i].nthash + ':::\n')
     print(".........................................................OK")
     print("[+] NTLM File: %s successfully created." % (filename))
 
