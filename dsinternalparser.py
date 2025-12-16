@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-
 '''
 @author:        r4wd3r
 @refactored-by: Commotio
@@ -217,6 +216,32 @@ def writeNTLMFile(users_list, output):
     print(".........................................................OK")
     print("[+] NTLM File: %s successfully created." % (filename))
 
+def writeNTLMHashesOnlyDedup(users_list, output):
+    '''
+    :param users_list: List of users created by the method processFile
+    :param output: Name of the output file
+    :return: Creates a file with unique NTLM hashes only (no usernames)
+    '''
+    print("\nCreating NTLM Hashes Only (De-duplicated) File...")
+    filename = output + "_ntlm_hashes_only.txt"
+
+    try:
+        f = codecs.open(filename, "w", "utf-8")
+    except:
+        print("ERROR: Cannot create the NTLM hashes-only file.")
+        return
+
+    ntlm_hashes = set()
+
+    for user in users_list:
+        if user.nthash and user.nthash.strip() and user.nthash != " ":
+            ntlm_hashes.add(user.nthash.strip())
+
+    for h in sorted(ntlm_hashes):
+        f.writelines(h + '\n')
+
+    print(".........................................................OK")
+    print("[+] NTLM Hashes Only File: %s successfully created." % filename)
 
 def writeNTLMHistoryFile(users_list, output):
     '''
@@ -316,6 +341,7 @@ def main():
     parser.add_argument('-o', '--output', help='Prefix name for output files.', type=str, default="output")
     parser.add_argument('--enabled', help='Generate the file with username and current LM:NT hash and enabled status.', action="store_true")
     parser.add_argument('--ntlm', help='Generate the file with username and current NTLM hash.', action="store_true")
+    parser.add_argument('--hashonly', help='Generate the file with deduplicated list of NTLM hashes (for hashtopolis).', action="store_true")
     parser.add_argument('--nthistory', help='Generate the file with username and history NTLM hashes.',
                         action="store_true")
     parser.add_argument('--lm', help='Generate the file with username and current LM hash.', action="store_true")
@@ -336,6 +362,7 @@ def main():
     if not args.ntlm and not args.enabled and not args.nthistory and not args.lm and not args.lmhistory and not args.cleartext and not args.wdigest:
         writeNTLMFile(users_list, output)
         writeNTLMHistoryFile(users_list, output)
+        writeNTLMHashesOnlyDedup(users_list, output)
         writeLMFile(users_list, output)
         writeEnabledFile(users_list, output)
         writeLMHistoryFile(users_list, output)
@@ -344,6 +371,8 @@ def main():
 
     if args.ntlm:
         writeNTLMFile(users_list, output)
+    if args.hashonly:
+        writeNTLMHistoryFile(users_list, output)
     if args.nthistory:
         writeNTLMHistoryFile(users_list, output)
     if args.lm:
@@ -356,6 +385,5 @@ def main():
         writeWDigestFile(users_list, output)
     if args.enabled:
         writeEnabledFile(users_list, output)
-
 
 main()
